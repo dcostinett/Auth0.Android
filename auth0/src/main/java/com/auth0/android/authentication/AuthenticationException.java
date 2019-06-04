@@ -35,6 +35,8 @@ import java.util.Map;
 
 public class AuthenticationException extends Auth0Exception {
 
+    public static final String STATUS_CODE_KEY = "statusCode";
+
     private static final String ERROR_KEY = "error";
     private static final String CODE_KEY = "code";
     private static final String DESCRIPTION_KEY = "description";
@@ -78,6 +80,10 @@ public class AuthenticationException extends Auth0Exception {
 
         String codeValue = (String) (this.values.containsKey(ERROR_KEY) ? this.values.get(ERROR_KEY) : this.values.get(CODE_KEY));
         this.code = codeValue != null ? codeValue : UNKNOWN_ERROR;
+
+        Integer statusCode = (Integer) (this.values.containsKey(STATUS_CODE_KEY) ? this.values.get(STATUS_CODE_KEY) : 0);
+        this.statusCode = statusCode;
+
         if (!this.values.containsKey(DESCRIPTION_KEY)) {
             this.description = (String) this.values.get(ERROR_DESCRIPTION_KEY);
             warnIfOIDCError();

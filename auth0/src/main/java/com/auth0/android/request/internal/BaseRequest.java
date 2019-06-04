@@ -51,6 +51,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.auth0.android.authentication.AuthenticationException.STATUS_CODE_KEY;
 import static com.auth0.android.request.internal.ResponseUtils.closeStream;
 
 abstract class BaseRequest<T, U extends Auth0Exception> implements ParameterizableRequest<T, U>, AuthorizableRequest<T, U>, Callback {
@@ -135,6 +136,7 @@ abstract class BaseRequest<T, U extends Auth0Exception> implements Parameterizab
             Type mapType = new TypeToken<Map<String, Object>>() {
             }.getType();
             Map<String, Object> mapPayload = gson.fromJson(stringPayload, mapType);
+            mapPayload.put(STATUS_CODE_KEY, response.code());
             return errorBuilder.from(mapPayload);
         } catch (JsonSyntaxException e) {
             return errorBuilder.from(stringPayload, response.code());
